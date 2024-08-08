@@ -46,7 +46,9 @@ services:
             - postgres-store:/var/lib/postgresql/data:rw
 
     nginx:
-        image: nginx
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
         container_name: nginx
         hostname: nginx
         restart: always
