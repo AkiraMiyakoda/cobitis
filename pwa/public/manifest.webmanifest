@@ -1,0 +1,23 @@
+{
+    "id": "/",
+    "name": "Cobitis",
+    "short_name": "Cobitis",
+    "theme_color": "#b8f2e6",
+    "background_color": "#5e6472",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/appicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "/appicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

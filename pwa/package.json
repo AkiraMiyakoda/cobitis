@@ -4,13 +4,14 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "vite build && python3 ./tools/modify_sw.py",
         "preview": "vite preview",
         "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
     },
     "devDependencies": {
         "@sveltejs/vite-plugin-svelte": "^3.1.1",
         "@tsconfig/svelte": "^5.0.4",
+        "sass": "^1.77.8",
         "svelte": "^4.2.18",
         "svelte-check": "^3.8.5",
         "tslib": "^2.6.3",

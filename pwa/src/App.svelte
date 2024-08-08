@@ -1,47 +1,79 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+    <div class="fill bg"></div>
 </main>
 
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+<style lang="scss">
+    @font-face {
+        font-display: swap;
+        font-family: "Titillium Web";
+        font-style: normal;
+        font-weight: 400;
+        src:
+            url("assets/fonts/titillium-web-v17-latin-regular.woff2") format("woff2"),
+            url("assets/fonts/titillium-web-v17-latin-regular.ttf") format("truetype");
+    }
+
+    @font-face {
+        font-display: swap;
+        font-family: "Titillium Web";
+        font-style: normal;
+        font-weight: 600;
+        src:
+            url("assets/fonts/titillium-web-v17-latin-600.woff2") format("woff2"),
+            url("assets/fonts/titillium-web-v17-latin-600.ttf") format("truetype");
+    }
+
+    @font-face {
+        font-display: swap;
+        font-family: "Titillium Web";
+        font-style: normal;
+        font-weight: 700;
+        src:
+            url("assets/fonts/titillium-web-v17-latin-700.woff2") format("woff2"),
+            url("assets/fonts/titillium-web-v17-latin-700.ttf") format("truetype");
+    }
+
+    // MVP.css customization
+    :root {
+        --active-brightness: 0.85;
+        --border-radius: 5px;
+        --box-shadow: 2px 2px 10px;
+        --color-accent: #ffa69e;
+        --color-bg: #5e6472;
+        --color-bg-secondary: #aed9e0;
+        --color-link: #118bee;
+        --color-secondary: #920de9;
+        --color-secondary-accent: #920de90b;
+        --color-shadow: #f4f4f4;
+        --color-table: #118bee;
+        --color-text: #faf3dd;
+        --color-text-secondary: #b8f2e6;
+        --font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+            Cantarell, "Helvetica Neue", sans-serif;
+        --hover-brightness: 1.2;
+        --justify-important: center;
+        --justify-normal: left;
+        --line-height: 1.5;
+        --width-card: 285px;
+        --width-card-medium: 460px;
+        --width-card-wide: 800px;
+        --width-content: 1080px;
+    }
+
+    .fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .bg {
+        background-image: url("assets/images/bg.png");
+        background-repeat: repeat;
+    }
 </style>
