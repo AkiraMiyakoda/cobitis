@@ -1,0 +1,86 @@
+# Copyright © 2024 Akira Miyakoda
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+name: cobitis
+
+services:
+    # api:
+    #     build: ./api
+    #     container_name: api
+    #     hostname: api
+    #     restart: always
+    #     depends_on:
+    #         - postgres
+    #     networks:
+    #         - cobitis-link
+    #     expose:
+    #         - 8080:8080/tcp
+    #     secrets:
+    #         - service-config.toml
+    #     environment:
+    #         - TZ=Asia/Tokyo
+    #         - RUST_LOG=info
+    #     volumes:
+    #         - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
+    #     stop_grace_period: 0.5s
+    #     tty: true
+
+    postgres:
+        image: postgres:16
+        container_name: postgres
+        hostname: postgres
+        restart: always
+        networks:
+            - cobitis-link
+        expose:
+            - 5432:5432/tcp
+        env_file:
+            - ./.secrets/postgres.env
+        environment:
+            - TZ=Asia/Tokyo
+        volumes:
+            - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
+            - ./postgres/initdb.d:/docker-entrypoint-initdb.d:ro
+            - postgres-store:/var/lib/postgresql/data:rw
+
+    # nginx:
+    #     image: nginx
+    #     container_name: nginx
+    #     hostname: nginx
+    #     restart: always
+    #     depends_on:
+    #         - api
+    #     networks:
+    #         - cobitis-link
+    #     ports:
+    #         - 443:443/tcp
+    #     secrets:
+    #         - fullchain.pem
+    #         - privkey.pem
+    #         - dhparam.pem
+    #     env_file:
+    #         - ./.secrets/nginx.env
+    #     environment:
+    #         - TZ=Asia/Tokyo
+    #     volumes:
+    #         - /usr/share/zoneinfo/Asia/Tokyo:/etc/timezone:ro
+    #         - ./nginx/templates:/etc/nginx/templates:ro
+    #     stop_grace_period: 0.5s
+
+networks:
+    cobitis-link:
+        external: false
+        name: cobitis.internal
+
+volumes:
+    postgres-store: {}
+
+secrets:
+    fullchain.pem:
+        file: ./.secrets/fullchain.pem
+    privkey.pem:
+        file: ./.secrets/privkey.pem
+    dhparam.pem:
+        file: ./.secrets/dhparam.pem
