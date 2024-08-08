@@ -45,29 +45,29 @@ services:
             - ./postgres/initdb.d:/docker-entrypoint-initdb.d:ro
             - postgres-store:/var/lib/postgresql/data:rw
 
-    # nginx:
-    #     image: nginx
-    #     container_name: nginx
-    #     hostname: nginx
-    #     restart: always
-    #     depends_on:
-    #         - api
-    #     networks:
-    #         - cobitis-link
-    #     ports:
-    #         - 443:443/tcp
-    #     secrets:
-    #         - fullchain.pem
-    #         - privkey.pem
-    #         - dhparam.pem
-    #     env_file:
-    #         - ./.secrets/nginx.env
-    #     environment:
-    #         - TZ=Asia/Tokyo
-    #     volumes:
-    #         - /usr/share/zoneinfo/Asia/Tokyo:/etc/timezone:ro
-    #         - ./nginx/templates:/etc/nginx/templates:ro
-    #     stop_grace_period: 0.5s
+    nginx:
+        image: nginx
+        container_name: nginx
+        hostname: nginx
+        restart: always
+        # depends_on:
+        #     - api
+        networks:
+            - cobitis-link
+        ports:
+            - 443:443/tcp
+        secrets:
+            - fullchain.pem
+            - privkey.pem
+            - dhparam.pem
+        env_file:
+            - ./.secrets/nginx.env
+        environment:
+            - TZ=Asia/Tokyo
+        volumes:
+            - /usr/share/zoneinfo/Asia/Tokyo:/etc/timezone:ro
+            - ./nginx/templates:/etc/nginx/templates:ro
+        stop_grace_period: 0.5s
 
 networks:
     cobitis-link:

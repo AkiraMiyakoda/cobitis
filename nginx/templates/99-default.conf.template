@@ -1,0 +1,19 @@
+# Copyright © 2024 Akira Miyakoda
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+
+    server_name _;
+    server_tokens off;
+
+    ssl_protocols TLSv1.3;
+    ssl_certificate /run/secrets/fullchain.pem;
+    ssl_certificate_key /run/secrets/privkey.pem;
+    ssl_dhparam /run/secrets/dhparam.pem;
+
+    return 444;
+}
