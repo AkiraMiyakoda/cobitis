@@ -6,6 +6,27 @@
 name: cobitis
 
 services:
+    pwa-api:
+        build: ./pwa-api
+        container_name: pwa-api
+        hostname: pwa-api
+        restart: always
+        depends_on:
+            - postgres
+        networks:
+            - cobitis-link
+        expose:
+            - 8081:8081/tcp
+        env_file:
+            - ./.secrets/api.env
+        environment:
+            - TZ=Asia/Tokyo
+            - RUST_LOG=info
+        volumes:
+            - /usr/share/zoneinfo/Asia/Tokyo:/etc/localtime:ro
+        stop_grace_period: 0.5s
+        tty: true
+
     sensor-api:
         build: ./sensor-api
         container_name: sensor-api
@@ -52,8 +73,9 @@ services:
         container_name: nginx
         hostname: nginx
         restart: always
-        # depends_on:
-        #     - api
+        depends_on:
+            - pwa-api
+            - sensor-api
         networks:
             - cobitis-link
         ports:
