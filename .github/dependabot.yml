@@ -11,3 +11,12 @@ updates:
       allow:
           - dependency-type: all
       open-pull-requests-limit: 10
+
+    - package-ecosystem: cargo
+      directories:
+          - /sensor-api
+      schedule:
+          interval: daily
+      allow:
+          - dependency-type: all
+      open-pull-requests-limit: 10
