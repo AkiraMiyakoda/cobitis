@@ -8,6 +8,21 @@ on:
     push:
 
 jobs:
+    pwa-api:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./pwa-api
+        steps:
+            - name: Checkout Crate
+              uses: actions/checkout@v4
+            - name: Set Toolchain
+              uses: dtolnay/rust-toolchain@stable
+            - name: cargo check
+              run: cargo check
+            - name: cargo clippy
+              run: cargo clippy
+
     sensor-api:
         runs-on: ubuntu-latest
         defaults:
