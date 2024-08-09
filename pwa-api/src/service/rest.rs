@@ -57,7 +57,7 @@ impl IntoResponse for AuthError {
     }
 }
 
-// const TOKEN_TTL: &str = "3 MINUTES";
+const TOKEN_TTL: &str = "3 MINUTES";
 
 pub async fn get_is_authed(session: Session) -> anyhow::Result<AuthSuccess, AuthError> {
     // Return OK if the current session is authenticated, otherwise return UNAUTHORIZED
@@ -95,9 +95,16 @@ pub async fn post_logout(session: Session) -> AuthSuccess {
 }
 
 pub async fn get_access_token(session: Session) -> anyhow::Result<AccessToken, AuthError> {
-    Err(AuthError {
-        reason: Some("".into()),
-    })
+    // Check if the current session is authenticated
+    let user_id = match session.get::<Uuid>("user_id") {
+        Some(user_id) => user_id,
+        None => return Err(AuthError { reason: None }),
+    };
+    let token = issue_access_token(user_id)
+        .await
+        .expect("Could not issue access token");
+
+    Ok(AccessToken { token })
 }
 
 async fn verify_credentials(creds: Credentials) -> anyhow::Result<Uuid> {
@@ -138,5 +145,40 @@ async fn verify_credentials(creds: Credentials) -> anyhow::Result<Uuid> {
 }
 
 async fn issue_access_token(user_id: Uuid) -> anyhow::Result<Uuid> {
-    Ok(Uuid::nil())
+    // Issue an access token for Socket.IO API
+    let pool = utils::pg::pool().await;
+    let mut tx = pool.begin().await?;
+
+    let row: (Uuid,) = sqlx::query_as(
+        r#"
+        INSERT INTO socketio_sessions (
+            user_id,
+            expires_at
+        ) VALUES (
+            $1,
+            CURRENT_TIMESTAMP(6) + $2::INTERVAL
+        )
+        RETURNING
+            token
+        ;"#,
+    )
+    .bind(user_id)
+    .bind(TOKEN_TTL)
+    .fetch_one(&mut *tx)
+    .await?;
+
+    // Delete the expired access tokens
+    sqlx::query(
+        r#"
+        DELETE FROM socketio_sessions
+        WHERE
+            expires_at < CURRENT_TIMESTAMP(6)
+        ;"#,
+    )
+    .execute(&mut *tx)
+    .await?;
+
+    tx.commit().await?;
+
+    Ok(row.0)
 }
