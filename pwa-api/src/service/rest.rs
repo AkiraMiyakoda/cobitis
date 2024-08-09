@@ -20,6 +20,12 @@ use crate::utils;
 
 type Session = axum_session::Session<SessionPgPool>;
 
+#[derive(Debug, Serialize, Deserialize)]
+struct UserId(Uuid);
+
+#[derive(Debug, Serialize)]
+struct Token(Uuid);
+
 #[derive(Debug, Deserialize)]
 pub struct Credentials {
     username: SecureString,
@@ -37,7 +43,7 @@ impl IntoResponse for AuthSuccess {
 
 #[derive(Debug, Serialize)]
 pub struct AccessToken {
-    token: Uuid,
+    token: Token,
 }
 
 impl IntoResponse for AccessToken {
@@ -144,7 +150,7 @@ async fn verify_credentials(creds: Credentials) -> anyhow::Result<Uuid> {
     }
 }
 
-async fn issue_access_token(user_id: Uuid) -> anyhow::Result<Uuid> {
+async fn issue_access_token(user_id: Uuid) -> anyhow::Result<Token> {
     // Issue an access token for Socket.IO API
     let pool = utils::pg::pool().await;
     let mut tx = pool.begin().await?;
@@ -180,5 +186,5 @@ async fn issue_access_token(user_id: Uuid) -> anyhow::Result<Uuid> {
 
     tx.commit().await?;
 
-    Ok(row.0)
+    Ok(Token(row.0))
 }
