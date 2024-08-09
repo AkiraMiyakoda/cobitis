@@ -3,8 +3,16 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+use serde::Deserialize;
 use socketioxide::extract::{Data, SocketRef};
+use uuid::Uuid;
 
-use super::models::socketio::*;
+#[derive(Debug, Deserialize)]
+pub struct Token(Uuid);
 
-pub async fn on_connect(socket: SocketRef, Data(handshake): Data<AccessToken>) {}
+#[derive(Debug, Deserialize)]
+pub struct Handshake {
+    token: Token,
+}
+
+pub async fn on_connect(socket: SocketRef, Data(handshake): Data<Handshake>) {}

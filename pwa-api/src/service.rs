@@ -18,7 +18,6 @@ use tower_http::catch_panic::CatchPanicLayer;
 
 use crate::utils::pg;
 
-mod models;
 mod rest;
 mod socketio;
 
