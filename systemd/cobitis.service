@@ -1,0 +1,13 @@
+[Unit]
+Description=Cobitis: tank monitor service
+After=network.target
+
+[Service]
+Type=simple
+Environment=RUST_LOG=info
+WorkingDirectory=/opt/bin
+ExecStart=/opt/bin/cobitis
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
