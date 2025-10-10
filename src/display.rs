@@ -116,8 +116,15 @@ async fn draw(ctx: &Arc<Context>) -> anyhow::Result<()> {
 
         // Draw signal level
         if let Some(signal) = signal {
-            #[allow(clippy::cast_possible_truncation)]
-            let level = ((signal.quality * 5.0) as i32).clamp(0, 4);
+            assert!(signal.quality.is_finite() && signal.quality <= 1.0);
+
+            let level = match signal.quality {
+                q if q < 0.2 => 0,
+                q if q < 0.4 => 1,
+                q if q < 0.6 => 2,
+                q if q < 0.8 => 3,
+                _ => 4,
+            };
             for i in 1..=level {
                 let x = 107 + i * 2;
                 let y = 12 - i * 2;
