@@ -901,7 +901,7 @@ checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 [[package]]
 name = "logger"
 version = "0.3.0"
-source = "git+https://github.com/AkiraMiyakoda/rust-utils.git?branch=main#45cae2e00995637064f96f851a0ace787215fe63"
+source = "git+https://github.com/AkiraMiyakoda/rust-utils.git?branch=main#778b9d7ce68661ccf1c3f652bedd41c11bc2cbde"
 dependencies = [
  "anstyle",
  "chrono",
