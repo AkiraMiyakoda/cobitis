@@ -145,7 +145,7 @@ async fn read(ctx: &Arc<Context>) -> anyhow::Result<Measurements> {
             let voltage = voltage / coefficient;
             let tds = (133.42 * voltage.powf(3.0) - 255.86 * voltage.powf(2.0) + 857.39 * voltage) * 0.5;
 
-            (tds * 10.0).round() / 10.0
+            tds.round()
         };
 
         Ok(Measurements::new(temperature, tds))

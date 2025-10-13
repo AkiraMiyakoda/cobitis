@@ -135,11 +135,12 @@ async fn draw(ctx: &Arc<Context>) -> anyhow::Result<()> {
             }
         }
 
-        // Draw temperature and TDS
-        let (temp, tds) = (
-            format_number(measurements.map(|m| m.temperature)),
-            format_number(measurements.map(|m| m.tds)),
-        );
+        // Draw temperature
+        let temp: Cow<_> = if let Some(v) = measurements.map(|m| m.temperature) {
+            format!("{v:>7.1}").into()
+        } else {
+            "    -.-".into()
+        };
 
         Text::with_baseline(&temp, Point::new(0, 16), text_styles.1, Baseline::Top)
             .draw(&mut *display)
@@ -150,6 +151,13 @@ async fn draw(ctx: &Arc<Context>) -> anyhow::Result<()> {
         Text::with_baseline("°C", Point::new(89, 23), text_styles.0, Baseline::Top)
             .draw(&mut *display)
             .unwrap();
+
+        // Draw TDS
+        let tds: Cow<_> = if let Some(v) = measurements.map(|m| m.tds) {
+            format!("{v:>7.0}").into()
+        } else {
+            "      -".into()
+        };
 
         Text::with_baseline(&tds, Point::new(0, 40), text_styles.1, Baseline::Top)
             .draw(&mut *display)
@@ -166,12 +174,4 @@ async fn draw(ctx: &Arc<Context>) -> anyhow::Result<()> {
         Ok(())
     })
     .await?
-}
-
-fn format_number(value: Option<f64>) -> Cow<'static, str> {
-    if let Some(v) = value {
-        format!("{v:>7.1}").into()
-    } else {
-        "    -.-".into()
-    }
 }
