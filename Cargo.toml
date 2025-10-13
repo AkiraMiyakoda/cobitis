@@ -13,7 +13,7 @@ eg-font-converter = { git = "https://github.com/embedded-graphics/bdf.git", bran
 embedded-graphics = "0.8.1"
 linux-embedded-hal = "0.4.0"
 logger = { git = "https://github.com/AkiraMiyakoda/rust-utils.git", branch = "main" }
-regex = "1.11.3"
+regex = "1.12.1"
 serde = { version = "1.0.228", features = ["derive"] }
 ssd1306 = "0.10.0"
 tokio = { version = "1.47.1", features = ["rt", "macros", "time", "sync"] }
